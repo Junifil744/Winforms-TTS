@@ -1,0 +1,158 @@
+﻿using NAudio.CoreAudioApi;
+using NAudio.Wave;
+using System;
+using System.IO;
+using System.Runtime.InteropServices;
+using System.Speech.Synthesis;
+using System.Windows.Forms;
+
+namespace WF_TTS
+{
+    public partial class MainForm : Form
+    {
+        // Windows API functions
+        [DllImport("user32.dll")]
+        private static extern bool RegisterHotKey(IntPtr hWnd, int id, uint fsModifiers, Keys vk);
+        [DllImport("user32.dll")]
+        private static extern bool UnregisterHotKey(IntPtr hWnd, int id);
+        [DllImport("user32.dll")]
+        static extern IntPtr GetForegroundWindow();
+        [DllImport("user32.dll")]
+        static extern bool SetForegroundWindow(IntPtr hWnd);
+
+        private SpeechSynthesizer synth = new SpeechSynthesizer();
+        private IntPtr lastWindow;
+        private string sVoice = "Microsoft Zira Desktop";
+        private int sDevice = 1;
+        private int sAudio = 0;
+
+        private void keyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyData == Keys.Enter)
+            {
+                ((TextBox)sender).FindForm().Hide();
+                if (lastWindow != IntPtr.Zero && lastWindow != null)
+                {
+                    SetForegroundWindow(lastWindow);
+                }
+                synth.SelectVoice(sVoice);
+                using (var ms = new MemoryStream())
+                {
+                    synth.SetOutputToWaveStream(ms);
+                    synth.Speak(((TextBox)sender).Text);
+                    synth.SetOutputToDefaultAudioDevice();
+
+                    ms.Position = 0;
+
+                    using (var rdr = new WaveFileReader(ms))
+                    {
+                        using (var out1 = new WaveOutEvent { DeviceNumber = sAudio })
+                        using (var out2 = new WaveOutEvent { DeviceNumber = sDevice })
+                        {
+                            var buffer = new byte[rdr.Length];
+                            rdr.Read(buffer, 0, buffer.Length);
+
+                            var stream1 = new RawSourceWaveStream(new MemoryStream(buffer), rdr.WaveFormat);
+                            var stream2 = new RawSourceWaveStream(new MemoryStream(buffer), rdr.WaveFormat);
+
+                            out1.Init(stream1);
+                            out2.Init(stream2);
+                            out1.Play();
+                            out2.Play();
+                            while (out1.PlaybackState == PlaybackState.Playing || out2.PlaybackState == PlaybackState.Playing) { }
+                        }
+                    }
+                }
+                GC.Collect();
+                GC.WaitForPendingFinalizers();
+                ((TextBox)sender).FindForm().Close();
+            }
+
+            if (e.KeyData == Keys.Escape)
+            {
+                ((TextBox)sender).FindForm().Close();
+            }
+        }
+
+        public MainForm()
+        {
+            InitializeComponent();
+            RegisterHotKey(Handle, 9000, 0x0002, Keys.T);
+            RegisterHotKey(Handle, 9000, 0x0002, Keys.T);
+
+            foreach (InstalledVoice voice in synth.GetInstalledVoices()) comboBox1.Items.Add(voice.VoiceInfo.Name);
+            for (int dev = 0; dev < WaveOut.DeviceCount; dev++)
+            {
+                var caps = WaveOut.GetCapabilities(dev);
+                comboBox2.Items.Add(dev + " - " + caps.ProductName);
+                comboBox3.Items.Add(dev + " - " + caps.ProductName);
+            }
+
+            comboBox2.SelectedIndex = 1;
+            comboBox3.SelectedIndex = 0;
+        }
+
+        protected override void WndProc(ref Message m)
+        {
+            const int WM_HOTKEY = 0x0312;
+
+            if (m.Msg == WM_HOTKEY && m.WParam.ToInt32() == 9000)
+            {
+
+                lastWindow = GetForegroundWindow();
+                TextBox speechTxtbox = new TextBox();
+                Form SpeechForm = new Form();
+                #region just fucking generating the speech window
+                SpeechForm.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+                SpeechForm.AutoScaleMode = AutoScaleMode.Font;
+                SpeechForm.ClientSize = new System.Drawing.Size(1000, 60);
+                SpeechForm.ControlBox = false;
+                SpeechForm.Controls.Add(speechTxtbox);
+                SpeechForm.FormBorderStyle = FormBorderStyle.None;
+                SpeechForm.MaximumSize = new System.Drawing.Size(1000, 60);
+                SpeechForm.MinimumSize = new System.Drawing.Size(1000, 60);
+                SpeechForm.ShowIcon = false;
+                SpeechForm.ShowInTaskbar = false;
+                SpeechForm.TopMost = true;
+
+                speechTxtbox.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+                speechTxtbox.Location = new System.Drawing.Point(12, 12);
+                speechTxtbox.Size = new System.Drawing.Size(976, 38);
+                speechTxtbox.TabIndex = 0;
+                speechTxtbox.KeyDown += new KeyEventHandler(keyDown);
+
+                SpeechForm.ResumeLayout(false);
+                SpeechForm.PerformLayout();
+                #endregion
+                SpeechForm.Show();
+                SetForegroundWindow(Handle);
+                speechTxtbox.Focus();
+                SpeechForm.Location = new System.Drawing.Point(Screen.PrimaryScreen.WorkingArea.Width / 2 - 500, 20);
+
+            }
+
+            base.WndProc(ref m);
+        }
+
+        protected override void OnFormClosing(FormClosingEventArgs e)
+        {
+            UnregisterHotKey(Handle, 9000);
+            base.OnFormClosing(e);
+        }
+
+        private void changeVoice(object sender, EventArgs e)
+        {
+            sVoice = ((ComboBox)sender).SelectedItem.ToString();
+        }
+
+        private void deviceChanged(object sender, EventArgs e)
+        {
+            sDevice = ((ComboBox)sender).SelectedIndex;
+        }
+
+        private void audioChanged(object sender, EventArgs e)
+        {
+            sAudio = ((ComboBox)sender).SelectedIndex;
+        }
+    }
+}

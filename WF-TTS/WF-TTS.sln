@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36414.22 d17.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WF-TTS", "WF-TTS\WF-TTS.csproj", "{AEF36215-A0CF-41CB-8375-57F99BE32032}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AEF36215-A0CF-41CB-8375-57F99BE32032}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AEF36215-A0CF-41CB-8375-57F99BE32032}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AEF36215-A0CF-41CB-8375-57F99BE32032}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AEF36215-A0CF-41CB-8375-57F99BE32032}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {9FCB6F79-6356-4599-88B2-C0F75DBA1E4A}
+	EndGlobalSection
+EndGlobal
