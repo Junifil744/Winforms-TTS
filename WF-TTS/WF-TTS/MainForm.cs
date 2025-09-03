@@ -2,7 +2,10 @@
 using NAudio.Wave;
 using System;
 using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
+using System.Threading.Tasks;
+
 using System.Speech.Synthesis;
 using System.Windows.Forms;
 
@@ -25,19 +28,20 @@ namespace WF_TTS
         private string sVoice = "Microsoft Zira Desktop";
         private int sDevice = 1;
         private int sAudio = 0;
+        private readonly string configFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "WF-TTS");
 
         private void keyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyData == Keys.Enter)
             {
                 ((TextBox)sender).FindForm().Hide();
-                if (lastWindow != IntPtr.Zero && lastWindow != null)
+                if (lastWindow != IntPtr.Zero)
                 {
                     SetForegroundWindow(lastWindow);
                 }
-                synth.SelectVoice(sVoice);
-                using (var ms = new MemoryStream())
+                using (MemoryStream ms = new MemoryStream())
                 {
+                    synth.SelectVoice(sVoice);
                     synth.SetOutputToWaveStream(ms);
                     synth.Speak(((TextBox)sender).Text);
                     synth.SetOutputToDefaultAudioDevice();
@@ -54,42 +58,71 @@ namespace WF_TTS
 
                             var stream1 = new RawSourceWaveStream(new MemoryStream(buffer), rdr.WaveFormat);
                             var stream2 = new RawSourceWaveStream(new MemoryStream(buffer), rdr.WaveFormat);
-
-                            out1.Init(stream1);
-                            out2.Init(stream2);
+                            try
+                            {
+                                out1.Init(stream1);
+                                out2.Init(stream2);
+                            }
+                            catch
+                            {
+                                RefreshDevices();
+                                e.Handled = true;
+                                e.SuppressKeyPress = true;
+                                return;
+                            }
                             out1.Play();
                             out2.Play();
                             while (out1.PlaybackState == PlaybackState.Playing || out2.PlaybackState == PlaybackState.Playing) { }
                         }
                     }
                 }
-                GC.Collect();
-                GC.WaitForPendingFinalizers();
-                ((TextBox)sender).FindForm().Close();
+                e.Handled = true;
+                e.SuppressKeyPress = true;
             }
 
             if (e.KeyData == Keys.Escape)
             {
                 ((TextBox)sender).FindForm().Close();
+                e.Handled = true;
+                e.SuppressKeyPress = true;
             }
+        }
+        private void WriteToConfig(string key, object value)
+        {
+
+        }
+
+        private void RefreshDevices()
+        {
+            ComboBox cableBox = (ComboBox)Controls.Find("cableBox", true)[0];
+            ComboBox deviceBox = (ComboBox)FindForm().Controls.Find("deviceBox", true)[0];
+            cableBox.Items.Clear();
+            deviceBox.Items.Clear();
+            for (int dev = 0; dev < WaveOut.DeviceCount; dev++)
+            {
+                var caps = WaveOut.GetCapabilities(dev);
+                cableBox.Items.Add(dev + " - " + caps.ProductName);
+                deviceBox.Items.Add(dev + " - " + caps.ProductName);
+            }
+            cableBox.SelectedIndex = 0;
+            deviceBox.SelectedIndex = 0;
+            return;
         }
 
         public MainForm()
         {
             InitializeComponent();
             RegisterHotKey(Handle, 9000, 0x0002, Keys.T);
-            RegisterHotKey(Handle, 9000, 0x0002, Keys.T);
-
             foreach (InstalledVoice voice in synth.GetInstalledVoices()) comboBox1.Items.Add(voice.VoiceInfo.Name);
             for (int dev = 0; dev < WaveOut.DeviceCount; dev++)
             {
                 var caps = WaveOut.GetCapabilities(dev);
-                comboBox2.Items.Add(dev + " - " + caps.ProductName);
-                comboBox3.Items.Add(dev + " - " + caps.ProductName);
+                cableBox.Items.Add(dev + " - " + caps.ProductName);
+                deviceBox.Items.Add(dev + " - " + caps.ProductName);
             }
 
-            comboBox2.SelectedIndex = 1;
-            comboBox3.SelectedIndex = 0;
+            cableBox.SelectedIndex = 1;
+            deviceBox.SelectedIndex = 0;
         }
 
         protected override void WndProc(ref Message m)
@@ -114,6 +147,7 @@ namespace WF_TTS
                 SpeechForm.ShowIcon = false;
                 SpeechForm.ShowInTaskbar = false;
                 SpeechForm.TopMost = true;
+                SpeechForm.Tag = this;
 
                 speechTxtbox.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
                 speechTxtbox.Location = new System.Drawing.Point(12, 12);
@@ -153,6 +187,16 @@ namespace WF_TTS
         private void audioChanged(object sender, EventArgs e)
         {
             sAudio = ((ComboBox)sender).SelectedIndex;
+        }
+
+        private void configNuke_Click(object sender, EventArgs e)
+        {
+            if (Directory.Exists(configFolder)) Directory.Delete(configFolder, true);
+        }
+
+        private void deviceRefresh_Click(object sender, EventArgs e)
+        {
+            RefreshDevices();
         }
     }
 }

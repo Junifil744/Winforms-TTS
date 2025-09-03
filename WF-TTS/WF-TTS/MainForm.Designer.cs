@@ -28,89 +28,122 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.comboBox2 = new System.Windows.Forms.ComboBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.comboBox3 = new System.Windows.Forms.ComboBox();
-            this.SuspendLayout();
+            comboBox1 = new System.Windows.Forms.ComboBox();
+            label1 = new System.Windows.Forms.Label();
+            cableBox = new System.Windows.Forms.ComboBox();
+            label2 = new System.Windows.Forms.Label();
+            label3 = new System.Windows.Forms.Label();
+            deviceBox = new System.Windows.Forms.ComboBox();
+            configNuke = new System.Windows.Forms.Button();
+            deviceRefresh = new System.Windows.Forms.Button();
+            SuspendLayout();
             // 
             // comboBox1
             // 
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(12, 25);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(221, 21);
-            this.comboBox1.TabIndex = 0;
-            this.comboBox1.Text = "Microsoft Zira Desktop";
-            this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.changeVoice);
+            comboBox1.FormattingEnabled = true;
+            comboBox1.Location = new System.Drawing.Point(14, 29);
+            comboBox1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            comboBox1.Name = "comboBox1";
+            comboBox1.Size = new System.Drawing.Size(257, 23);
+            comboBox1.TabIndex = 0;
+            comboBox1.Text = "Microsoft Zira Desktop";
+            comboBox1.SelectedIndexChanged += changeVoice;
             // 
             // label1
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(87, 9);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(67, 13);
-            this.label1.TabIndex = 1;
-            this.label1.Text = "Select Voice";
+            label1.AutoSize = true;
+            label1.Location = new System.Drawing.Point(102, 10);
+            label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            label1.Name = "label1";
+            label1.Size = new System.Drawing.Size(69, 15);
+            label1.TabIndex = 1;
+            label1.Text = "Select Voice";
             // 
-            // comboBox2
+            // cableBox
             // 
-            this.comboBox2.FormattingEnabled = true;
-            this.comboBox2.Location = new System.Drawing.Point(12, 70);
-            this.comboBox2.Name = "comboBox2";
-            this.comboBox2.Size = new System.Drawing.Size(221, 21);
-            this.comboBox2.TabIndex = 2;
-            this.comboBox2.Text = "null";
-            this.comboBox2.SelectedIndexChanged += new System.EventHandler(this.deviceChanged);
+            cableBox.DropDownWidth = 200;
+            cableBox.FormattingEnabled = true;
+            cableBox.Location = new System.Drawing.Point(14, 73);
+            cableBox.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            cableBox.Name = "cableBox";
+            cableBox.Size = new System.Drawing.Size(125, 23);
+            cableBox.TabIndex = 2;
+            cableBox.Text = "null";
+            cableBox.SelectedIndexChanged += deviceChanged;
             // 
             // label2
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(79, 53);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(84, 13);
-            this.label2.TabIndex = 3;
-            this.label2.Text = "Select VB-Cable";
+            label2.AutoSize = true;
+            label2.Location = new System.Drawing.Point(14, 55);
+            label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            label2.Name = "label2";
+            label2.Size = new System.Drawing.Size(90, 15);
+            label2.TabIndex = 3;
+            label2.Text = "Select VB-Cable";
             // 
             // label3
             // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(70, 99);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(104, 13);
-            this.label3.TabIndex = 4;
-            this.label3.Text = "Select Audio Device";
+            label3.AutoSize = true;
+            label3.Location = new System.Drawing.Point(160, 55);
+            label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            label3.Name = "label3";
+            label3.Size = new System.Drawing.Size(111, 15);
+            label3.TabIndex = 4;
+            label3.Text = "Select Audio Device";
             // 
-            // comboBox3
+            // deviceBox
             // 
-            this.comboBox3.FormattingEnabled = true;
-            this.comboBox3.Location = new System.Drawing.Point(12, 115);
-            this.comboBox3.Name = "comboBox3";
-            this.comboBox3.Size = new System.Drawing.Size(221, 21);
-            this.comboBox3.TabIndex = 5;
-            this.comboBox3.Text = "null";
-            this.comboBox3.SelectedIndexChanged += new System.EventHandler(this.audioChanged);
+            deviceBox.DropDownWidth = 200;
+            deviceBox.FormattingEnabled = true;
+            deviceBox.Location = new System.Drawing.Point(148, 73);
+            deviceBox.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            deviceBox.Name = "deviceBox";
+            deviceBox.Size = new System.Drawing.Size(125, 23);
+            deviceBox.TabIndex = 5;
+            deviceBox.Text = "null";
+            deviceBox.SelectedIndexChanged += audioChanged;
+            // 
+            // configNuke
+            // 
+            configNuke.Location = new System.Drawing.Point(14, 102);
+            configNuke.Name = "configNuke";
+            configNuke.Size = new System.Drawing.Size(125, 23);
+            configNuke.TabIndex = 6;
+            configNuke.Text = "Nuke Config";
+            configNuke.UseVisualStyleBackColor = true;
+            configNuke.Click += configNuke_Click;
+            // 
+            // deviceRefresh
+            // 
+            deviceRefresh.Location = new System.Drawing.Point(148, 102);
+            deviceRefresh.Name = "deviceRefresh";
+            deviceRefresh.Size = new System.Drawing.Size(125, 23);
+            deviceRefresh.TabIndex = 7;
+            deviceRefresh.Text = "Refresh Devices";
+            deviceRefresh.UseVisualStyleBackColor = true;
+            deviceRefresh.Click += deviceRefresh_Click;
             // 
             // MainForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(245, 148);
-            this.Controls.Add(this.comboBox3);
-            this.Controls.Add(this.label3);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.comboBox2);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.comboBox1);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
-            this.MaximizeBox = false;
-            this.Name = "MainForm";
-            this.Text = "Voice Select";
-            this.WindowState = System.Windows.Forms.FormWindowState.Minimized;
-            this.ResumeLayout(false);
-            this.PerformLayout();
+            AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            ClientSize = new System.Drawing.Size(286, 136);
+            Controls.Add(deviceRefresh);
+            Controls.Add(configNuke);
+            Controls.Add(deviceBox);
+            Controls.Add(label3);
+            Controls.Add(label2);
+            Controls.Add(cableBox);
+            Controls.Add(label1);
+            Controls.Add(comboBox1);
+            FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            MaximizeBox = false;
+            Name = "MainForm";
+            Text = "Voice Select";
+            WindowState = System.Windows.Forms.FormWindowState.Minimized;
+            ResumeLayout(false);
+            PerformLayout();
 
         }
 
@@ -118,10 +151,12 @@
 
         private System.Windows.Forms.ComboBox comboBox1;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.ComboBox comboBox2;
+        private System.Windows.Forms.ComboBox cableBox;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.ComboBox comboBox3;
+        private System.Windows.Forms.ComboBox deviceBox;
+        private System.Windows.Forms.Button configNuke;
+        private System.Windows.Forms.Button deviceRefresh;
     }
 }
 
