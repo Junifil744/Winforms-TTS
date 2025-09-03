@@ -26,9 +26,8 @@
         /// Required method for Designer support - do not modify
         /// the contents of this method with the code editor.
         /// </summary>
-        private void InitializeComponent()
-        {
-            comboBox1 = new System.Windows.Forms.ComboBox();
+        private void InitializeComponent() {
+            voiceBox = new System.Windows.Forms.ComboBox();
             label1 = new System.Windows.Forms.Label();
             cableBox = new System.Windows.Forms.ComboBox();
             label2 = new System.Windows.Forms.Label();
@@ -38,16 +37,16 @@
             deviceRefresh = new System.Windows.Forms.Button();
             SuspendLayout();
             // 
-            // comboBox1
+            // voiceBox
             // 
-            comboBox1.FormattingEnabled = true;
-            comboBox1.Location = new System.Drawing.Point(14, 29);
-            comboBox1.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            comboBox1.Name = "comboBox1";
-            comboBox1.Size = new System.Drawing.Size(257, 23);
-            comboBox1.TabIndex = 0;
-            comboBox1.Text = "Microsoft Zira Desktop";
-            comboBox1.SelectedIndexChanged += changeVoice;
+            voiceBox.FormattingEnabled = true;
+            voiceBox.Location = new System.Drawing.Point(14, 29);
+            voiceBox.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            voiceBox.Name = "voiceBox";
+            voiceBox.Size = new System.Drawing.Size(257, 23);
+            voiceBox.TabIndex = 0;
+            voiceBox.Text = "null";
+            voiceBox.SelectedIndexChanged += changeVoice;
             // 
             // label1
             // 
@@ -69,7 +68,7 @@
             cableBox.Size = new System.Drawing.Size(125, 23);
             cableBox.TabIndex = 2;
             cableBox.Text = "null";
-            cableBox.SelectedIndexChanged += deviceChanged;
+            cableBox.SelectedIndexChanged += cableChanged;
             // 
             // label2
             // 
@@ -101,7 +100,7 @@
             deviceBox.Size = new System.Drawing.Size(125, 23);
             deviceBox.TabIndex = 5;
             deviceBox.Text = "null";
-            deviceBox.SelectedIndexChanged += audioChanged;
+            deviceBox.SelectedIndexChanged += deviceChanged;
             // 
             // configNuke
             // 
@@ -135,13 +134,14 @@
             Controls.Add(label2);
             Controls.Add(cableBox);
             Controls.Add(label1);
-            Controls.Add(comboBox1);
+            Controls.Add(voiceBox);
             FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             MaximizeBox = false;
             Name = "MainForm";
             Text = "Voice Select";
             WindowState = System.Windows.Forms.FormWindowState.Minimized;
+            FormClosing += OnFormClosing;
             ResumeLayout(false);
             PerformLayout();
 
@@ -149,7 +149,7 @@
 
         #endregion
 
-        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.ComboBox voiceBox;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ComboBox cableBox;
         private System.Windows.Forms.Label label2;
