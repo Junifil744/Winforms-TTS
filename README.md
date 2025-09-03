@@ -24,6 +24,5 @@ Does __not__ feature:
 - Linux support.
 - Other TTS models (Piper, Dectalk, **any** cloud tts service, etc).
 - Handholding.
-- Any config file to change the defaults (yet, probs to add later).
 ___
 <img width="250" height="250" alt="probablyworks" src="https://github.com/user-attachments/assets/dd9472bd-5422-41a8-862c-caaa062a0bc2" />
