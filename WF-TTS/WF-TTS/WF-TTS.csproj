@@ -1,9 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<UseWindowsForms>true</UseWindowsForms>
-		<OutputType>WinExe</OutputType>
+		<OutputType>Exe</OutputType>
+		<BuiltInComInteropSupport>true</BuiltInComInteropSupport>
 		<RootNamespace>WF_TTS</RootNamespace>
-
+		<PublishTrimmed>true</PublishTrimmed>
+		<_SuppressWinFormsTrimError>true</_SuppressWinFormsTrimError>
 		<RuntimeIdentifier>win-x64</RuntimeIdentifier>
 		<SelfContained>true</SelfContained>
 		<StartupObject>WF_TTS.Program</StartupObject>
@@ -13,6 +15,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<TrimmerRootAssembly Include="System.Speech" />
 		<PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
 		<PackageReference Include="NAudio" Version="2.2.1" />
 		<PackageReference Include="NAudio.Asio" Version="2.2.1" />
