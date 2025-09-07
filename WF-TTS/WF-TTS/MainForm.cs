@@ -67,7 +67,7 @@ namespace WF_TTS
                 deviceBox.Items.Add(dev + " - " + caps.ProductName);
             }
 
-            // Setting the Voice, defaulting to... Honestly id have to check what to default to.
+            // Setting the Voice, defaulting to the first available voice.
             string configVoice = readConfig(0);
             if (configVoice != null) {
                 sVoice = configVoice;
@@ -90,22 +90,23 @@ namespace WF_TTS
             if (voiceBox.Text == "null") {
                 Application.Exit();
             }
+
+            // Verify the integrity of the config file. Previously, this part of code was written by 5am me. It was nightmare.
             if (File.Exists(configFolder + "\\tts.config")) {
                 try {
-                    if (Convert.ToInt32(readConfig(1)) > synth.GetInstalledVoices().Count) {
+                    if (Convert.ToInt32(readConfig(1)) > WaveOut.DeviceCount) {
                         sCable = 0;
                         cableBox.SelectedIndex = 0;
                         writeConfig(1, "0");
                     }
-                    if (Convert.ToInt32(readConfig(2)) > synth.GetInstalledVoices().Count) {
-                        sCable = 0;
-                        cableBox.SelectedIndex = 0;
+                    if (Convert.ToInt32(readConfig(2)) > WaveOut.DeviceCount) {
+                        sDevice = 0;
+                        deviceBox.SelectedIndex = 0;
                         writeConfig(2, "0");
                     }
                 } catch {
                     File.WriteAllText(configFolder + "\\tts.config", $"{sVoice}\n{sCable}\n{sDevice}");
                 }
-
             }
 
             // Setting the CABLE device by pulling from the config or defaulting to ID 1

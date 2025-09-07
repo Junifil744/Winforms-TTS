@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<UseWindowsForms>true</UseWindowsForms>
-		<OutputType>Exe</OutputType>
+		<OutputType>WinExe</OutputType>
 		<BuiltInComInteropSupport>true</BuiltInComInteropSupport>
 		<RootNamespace>WF_TTS</RootNamespace>
 		<PublishTrimmed>true</PublishTrimmed>
@@ -9,7 +9,6 @@
 		<RuntimeIdentifier>win-x64</RuntimeIdentifier>
 		<SelfContained>true</SelfContained>
 		<StartupObject>WF_TTS.Program</StartupObject>
-
 		<TargetFramework>net9.0-windows</TargetFramework>
 		<SupportedOSPlatformVersion>7.0</SupportedOSPlatformVersion>
 	</PropertyGroup>
