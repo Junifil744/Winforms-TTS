@@ -67,25 +67,20 @@ namespace WF_TTS
                 deviceBox.Items.Add(dev + " - " + caps.ProductName);
             }
 
-            // Setting the Voice, defaulting to the first available voice.
+            // Setting the Voice, defaulting to the first available voice, if impossible, exit the app.
+            try {
+                sVoice = synth.GetInstalledVoices()[0].VoiceInfo.Name;
+                voiceBox.SelectedIndex = 0;
+            } catch { /* pass */ }
             string configVoice = readConfig(0);
             if (configVoice != null) {
                 sVoice = configVoice;
-                bool validVoice = false;
                 for (int i = 0; i < synth.GetInstalledVoices().Count; i++) {
                     if (synth.GetInstalledVoices()[i].VoiceInfo.Name == configVoice) {
                         voiceBox.SelectedIndex = i;
-                        validVoice = true;
                         break;
                     }
                 }
-                if (!validVoice) {
-                    sVoice = synth.GetInstalledVoices()[0].VoiceInfo.Name;
-                    voiceBox.SelectedIndex = 0;
-                }
-            } else {
-                sVoice = synth.GetInstalledVoices()[0].VoiceInfo.Name;
-                voiceBox.SelectedIndex = 0;
             }
             if (voiceBox.Text == "null") {
                 Application.Exit();
@@ -107,7 +102,7 @@ namespace WF_TTS
                 } catch {
                     File.WriteAllText(configFolder + "\\tts.config", $"{sVoice}\n{sCable}\n{sDevice}");
                 }
-            }
+            
 
             // Setting the CABLE device by pulling from the config or defaulting to ID 1
             string configCable = readConfig(1);
