@@ -102,7 +102,7 @@ namespace WF_TTS
                 } catch {
                     File.WriteAllText(configFolder + "\\tts.config", $"{sVoice}\n{sCable}\n{sDevice}");
                 }
-            
+            }
 
             // Setting the CABLE device by pulling from the config or defaulting to ID 1
             string configCable = readConfig(1);
