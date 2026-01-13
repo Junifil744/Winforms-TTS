@@ -108,7 +108,13 @@ namespace WF_TTS
             string configCable = readConfig(1);
             if (configCable != null) {
                 sCable = Convert.ToInt32(configCable);
-                cableBox.SelectedIndex = Convert.ToInt32(configCable);
+                try {
+                    cableBox.SelectedIndex = Convert.ToInt32(configCable);
+                } catch {
+                    if (Directory.Exists(configFolder)) Directory.Delete(configFolder, true); // THIS SOLUTION IS STUPID FOR THE LOVE OF GOD FIX IT LATER
+                    configCable = "null";
+                    cableBox.SelectedIndex = Convert.ToInt32(configCable);
+                }
             } else {
                 sCable = 1;
                 cableBox.SelectedIndex = 1;
